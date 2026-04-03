@@ -1,14 +1,10 @@
 <?php
-/**
- * Main index file
- */
 get_template_part('head'); // head.php'yi ekler
 
-// WooCommerce aktifse ürünleri listele
 if ( class_exists('WooCommerce') ) :
     $args = array(
         'post_type' => 'product',
-        'posts_per_page' => 16,
+        'posts_per_page' => 24, // daha fazla ürün göster
         'post_status' => 'publish'
     );
     $products = new WP_Query($args);
@@ -25,8 +21,8 @@ if ( class_exists('WooCommerce') ) :
               <img src="<?php echo wc_placeholder_img_src(); ?>" alt="">
             <?php } ?>
             <div class="product-info">
-              <?php the_title(); ?><br>
-              <?php echo $product->get_price_html(); ?>
+              <span class="title"><?php the_title(); ?></span>
+              <span class="price"><?php echo $product->get_price_html(); ?></span>
             </div>
         </a>
       <?php endwhile; ?>
@@ -35,7 +31,7 @@ if ( class_exists('WooCommerce') ) :
     else : ?>
       <p style="text-align:center">No products found.</p>
     <?php endif;
-else: // WooCommerce yoksa klasik yazıları göster
+else:
   if (have_posts()) : ?>
     <div class="grid-container">
     <?php while (have_posts()) : the_post(); ?>
@@ -46,7 +42,7 @@ else: // WooCommerce yoksa klasik yazıları göster
           <img src="<?php echo get_template_directory_uri(); ?>/placeholder.png" alt="">
         <?php } ?>
         <div class="product-info">
-          <?php the_title(); ?><br>
+          <span class="title"><?php the_title(); ?></span>
         </div>
       </a>
     <?php endwhile; ?>
@@ -56,4 +52,4 @@ else: // WooCommerce yoksa klasik yazıları göster
     <?php endif;
 endif;
 
-get_template_part('footer'); // footer.php'yi ekler
+get_template_part('footer');
